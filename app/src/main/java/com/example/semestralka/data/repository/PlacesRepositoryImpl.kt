@@ -11,16 +11,14 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
-class `PlacesRepositoryImpl.kt` @Inject constructor(
+class PlacesRepositoryImpl @Inject constructor(
     private val apiService: OverpassApiService,
     private val favoritesDataStore: FavoritesDataStore,
     private val fallbackProvider: FallbackPlacesProvider
 ) : PlacesRepository {
 
     private val placesCache = MutableStateFlow<List<Place>>(emptyList())
-
     private val zilinaBbox = "49.18,18.70,49.24,18.76"
 
     override fun getPlaces(): Flow<List<Place>> = placesCache
@@ -44,8 +42,7 @@ class `PlacesRepositoryImpl.kt` @Inject constructor(
 
     private suspend fun fetchFromApi(): List<Place>? {
         return try {
-            val queries = buildOverpassQuery()
-            val response = apiService.fetchPoi(queries)
+            val response = apiService.fetchPoi(buildOverpassQuery())
             response.elements.mapNotNull { element ->
                 val category = detectCategory(element.tags) ?: return@mapNotNull null
                 Place(
@@ -64,19 +61,17 @@ class `PlacesRepositoryImpl.kt` @Inject constructor(
         }
     }
 
-    private fun buildOverpassQuery(): String {
-        return """
-            [out:json][timeout:25];
-            (
-              node["amenity"="cafe"]($zilinaBbox);
-              node["amenity"="restaurant"]($zilinaBbox);
-              node["tourism"="attraction"]($zilinaBbox);
-              node["leisure"="park"]($zilinaBbox);
-              node["shop"="mall"]($zilinaBbox);
-            );
-            out body;
-        """.trimIndent()
-    }
+    private fun buildOverpassQuery(): String = """
+        [out:json][timeout:25];
+        (
+          node["amenity"="cafe"]($zilinaBbox);
+          node["amenity"="restaurant"]($zilinaBbox);
+          node["tourism"="attraction"]($zilinaBbox);
+          node["leisure"="park"]($zilinaBbox);
+          node["shop"="mall"]($zilinaBbox);
+        );
+        out body;
+    """.trimIndent()
 
     private fun detectCategory(tags: Map<String, String>): Category? = when {
         tags["amenity"] == "cafe" -> Category.CAFE

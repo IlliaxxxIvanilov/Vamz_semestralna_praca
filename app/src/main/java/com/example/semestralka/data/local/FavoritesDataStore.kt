@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,7 +16,6 @@ import javax.inject.Singleton
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = "favorites"
 )
-
 
 @Singleton
 class FavoritesDataStore @Inject constructor(
@@ -39,13 +39,8 @@ class FavoritesDataStore @Inject constructor(
             preferences[favoritesKey] = current - placeId
         }
     }
-    
+
     suspend fun isFavorite(placeId: String): Boolean {
-        var result = false
-        favoriteIds.collect { ids ->
-            result = placeId in ids
-            return@collect
-        }
-        return result
+        return favoriteIds.first().contains(placeId)
     }
 }

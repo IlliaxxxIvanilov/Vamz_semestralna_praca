@@ -138,7 +138,7 @@ fun MapScreen(
                 }
             }
 
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.weight(1f)) {
                 when (val state = uiState) {
                     is MapUiState.Loading -> {
                         CircularProgressIndicator(
@@ -148,7 +148,7 @@ fun MapScreen(
                     is MapUiState.Success -> {
                         OsmMapView(
                             places = state.places,
-                            userLocation = userLocation,
+                            userLocation = state.userLocation,
                             centerOnUser = centerOnUser,
                             onCenterConsumed = { centerOnUser = false },
                             onPlaceClick = onPlaceClick,
