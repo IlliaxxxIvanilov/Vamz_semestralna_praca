@@ -1,6 +1,5 @@
 package com.example.semestralka.ui.components
 
-import android.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -8,24 +7,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.semestralka.model.Category
 import com.example.semestralka.model.Place
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 private const val ZILINA_LAT = 49.2231
 private const val ZILINA_LON = 18.7394
 private const val DEFAULT_ZOOM = 14.0
 
-
 @Composable
 fun OsmMapView(
     places: List<Place>,
-    centerOnUser: Boolean,
-    onCenterConsumed: () -> Unit,
+    userLocation: Pair<Double, Double>? = null,
+    centerOnUser: Boolean = false,
+    onCenterConsumed: () -> Unit = {},
     onPlaceClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -44,15 +44,26 @@ fun OsmMapView(
         }
     }
 
+    val locationOverlay = remember {
+        MyLocationNewOverlay(GpsMyLocationProvider(context), mapView).apply {
+            enableMyLocation()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (!mapView.overlays.contains(locationOverlay)) {
+            mapView.overlays.add(locationOverlay)
+        }
+    }
+
     LaunchedEffect(places) {
-        mapView.overlays.clear()
+        mapView.overlays.removeAll { it is Marker }
         places.forEach { place ->
             val marker = Marker(mapView).apply {
                 position = GeoPoint(place.latitude, place.longitude)
                 title = place.name
                 snippet = place.category.displayName
                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                // Color markers by category
                 setOnMarkerClickListener { _, _ ->
                     onPlaceClick(place.id)
                     true
@@ -63,8 +74,11 @@ fun OsmMapView(
         mapView.invalidate()
     }
 
-    LaunchedEffect(centerOnUser) {
-        if (centerOnUser) {
+    LaunchedEffect(centerOnUser, userLocation) {
+        if (centerOnUser && userLocation != null) {
+            mapView.controller.animateTo(
+                GeoPoint(userLocation.first, userLocation.second)
+            )
             onCenterConsumed()
         }
     }
@@ -72,6 +86,7 @@ fun OsmMapView(
     DisposableEffect(Unit) {
         mapView.onResume()
         onDispose {
+            locationOverlay.disableMyLocation()
             mapView.onPause()
         }
     }
