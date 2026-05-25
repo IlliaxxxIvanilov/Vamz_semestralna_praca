@@ -8,6 +8,7 @@
 
     <string name="screen_list_title">Miesta v Žiline</string>
     <string name="screen_favorites_title">Obľúbené miesta</string>
+    <string name="screen_map_title">Žilina Guide</string>
 
     <string name="action_my_location">Moja poloha</string>
     <string name="action_sort_distance">Zoradiť podľa vzdialenosti</string>
@@ -15,14 +16,25 @@
     <string name="action_add_favorite">Pridať do obľúbených</string>
     <string name="action_remove_favorite">Odstrániť z obľúbených</string>
     <string name="action_back">Späť</string>
+    <string name="action_delete">Odstrániť</string>
 
     <string name="filter_all">Všetko</string>
+    <string name="filter_cafe">Kaviarne</string>
+    <string name="filter_restaurant">Reštaurácie</string>
+    <string name="filter_attraction">Pamiatky</string>
+    <string name="filter_park">Parky</string>
+    <string name="filter_shop">Obchody</string>
 
     <string name="search_placeholder">Hľadať miesto…</string>
 
     <string name="list_empty">Žiadne miesta neboli nájdené.</string>
     <string name="favorites_empty">Zatiaľ nemáte žiadne obľúbené miesta.\nKlepnite na srdiečko v detaile miesta.</string>
     <string name="detail_not_found">Miesto sa nenašlo.</string>
+    <string name="loading">Načítavanie…</string>
+    <string name="error_no_connection">Nie je dostupné pripojenie. Zobrazujem uložené miesta.</string>
+
+    <string name="detail_opening_hours">Otváracie hodiny</string>
+    <string name="detail_navigate_hint">Otvorí navigáciu v externej aplikácii</string>
 
     <string name="notification_channel_name">Aktualizácie miest</string>
     <string name="notification_channel_description">Upozornenia pri aktualizácii zoznamu miest</string>
