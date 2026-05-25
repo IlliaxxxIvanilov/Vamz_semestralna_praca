@@ -32,6 +32,10 @@ fun OsmMapView(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        Configuration.getInstance().load(
+            context,
+            context.getSharedPreferences("osmdroid", android.content.Context.MODE_PRIVATE)
+        )
         Configuration.getInstance().userAgentValue = context.packageName
     }
 
@@ -39,8 +43,13 @@ fun OsmMapView(
         MapView(context).apply {
             setTileSource(TileSourceFactory.MAPNIK)
             setMultiTouchControls(true)
+            zoomController.setVisibility(
+                org.osmdroid.views.CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT
+            )
             controller.setZoom(DEFAULT_ZOOM)
             controller.setCenter(GeoPoint(ZILINA_LAT, ZILINA_LON))
+            isHorizontalMapRepetitionEnabled = false
+            isVerticalMapRepetitionEnabled = false
         }
     }
 

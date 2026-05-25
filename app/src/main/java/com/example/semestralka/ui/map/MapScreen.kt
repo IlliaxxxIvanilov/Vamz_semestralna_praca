@@ -42,7 +42,6 @@ import com.example.semestralka.model.Category
 import com.example.semestralka.ui.components.CategoryChip
 import com.example.semestralka.ui.components.OsmMapView
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
@@ -54,7 +53,6 @@ fun MapScreen(
     val userLocation by viewModel.userLocation.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
-    val permissionDeniedMessage = stringResource(R.string.error_location_permission_denied)
 
     var locationGranted by rememberSaveable {
         mutableStateOf(
@@ -63,11 +61,10 @@ fun MapScreen(
             ) == PackageManager.PERMISSION_GRANTED
         )
     }
-
     var centerOnUser by remember { mutableStateOf(false) }
 
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
+        ActivityResultContracts.RequestPermission()
     ) { granted ->
         locationGranted = granted
         if (granted) {
@@ -77,33 +74,25 @@ fun MapScreen(
     }
 
     LaunchedEffect(locationGranted) {
-        if (locationGranted) {
-            viewModel.fetchUserLocation()
-        }
+        if (locationGranted) viewModel.fetchUserLocation()
     }
 
     Scaffold(
         snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(snackbarData = data)
-            }
+            SnackbarHost(snackbarHostState) { data -> Snackbar(snackbarData = data) }
         },
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.app_name)) }
-            )
+            TopAppBar(title = { Text(stringResource(R.string.app_name)) })
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    if (locationGranted) {
-                        viewModel.fetchUserLocation()
-                        centerOnUser = true
-                    } else {
-                        permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                    }
+            FloatingActionButton(onClick = {
+                if (locationGranted) {
+                    viewModel.fetchUserLocation()
+                    centerOnUser = true
+                } else {
+                    permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
-            ) {
+            }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_my_location),
                     contentDescription = stringResource(R.string.action_my_location)
@@ -137,8 +126,11 @@ fun MapScreen(
                     )
                 }
             }
-
-            Box(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
                 when (val state = uiState) {
                     is MapUiState.Loading -> {
                         CircularProgressIndicator(
@@ -148,7 +140,7 @@ fun MapScreen(
                     is MapUiState.Success -> {
                         OsmMapView(
                             places = state.places,
-                            userLocation = state.userLocation,
+                            userLocation = userLocation,
                             centerOnUser = centerOnUser,
                             onCenterConsumed = { centerOnUser = false },
                             onPlaceClick = onPlaceClick,
