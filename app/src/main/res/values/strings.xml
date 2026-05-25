@@ -40,4 +40,6 @@
     <string name="notification_channel_description">Upozornenia pri aktualizácii zoznamu miest</string>
     <string name="notification_refresh_title">Žilina Guide</string>
     <string name="notification_refresh_text">Zoznam miest bol aktualizovaný.</string>
+
+    <string name="error_location_permission_denied">Pre zobrazenie polohy povoľte prístup k GPS.</string>
 </resources>

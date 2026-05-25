@@ -16,10 +16,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,9 +39,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.semestralka.R
 import com.example.semestralka.model.Category
-import com.example.semestralka.model.Place
 import com.example.semestralka.ui.components.CategoryChip
 import com.example.semestralka.ui.components.OsmMapView
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,7 +51,10 @@ fun MapScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
+    val userLocation by viewModel.userLocation.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val permissionDeniedMessage = stringResource(R.string.error_location_permission_denied)
 
     var locationGranted by rememberSaveable {
         mutableStateOf(
@@ -64,20 +70,34 @@ fun MapScreen(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
         locationGranted = granted
-        if (granted) centerOnUser = true
+        if (granted) {
+            viewModel.fetchUserLocation()
+            centerOnUser = true
+        }
+    }
+
+    LaunchedEffect(locationGranted) {
+        if (locationGranted) {
+            viewModel.fetchUserLocation()
+        }
     }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                Snackbar(snackbarData = data)
+            }
+        },
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.app_name)) },
-                colors = TopAppBarDefaults.topAppBarColors()
+                title = { Text(stringResource(R.string.app_name)) }
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
                     if (locationGranted) {
+                        viewModel.fetchUserLocation()
                         centerOnUser = true
                     } else {
                         permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -121,11 +141,14 @@ fun MapScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 when (val state = uiState) {
                     is MapUiState.Loading -> {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
                     is MapUiState.Success -> {
                         OsmMapView(
                             places = state.places,
+                            userLocation = userLocation,
                             centerOnUser = centerOnUser,
                             onCenterConsumed = { centerOnUser = false },
                             onPlaceClick = onPlaceClick,
@@ -133,11 +156,11 @@ fun MapScreen(
                         )
                     }
                     is MapUiState.Error -> {
-                        Text(
-                            text = state.message,
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .padding(16.dp)
+                        LaunchedEffect(state.message) {
+                            snackbarHostState.showSnackbar(state.message)
+                        }
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
                         )
                     }
                 }
