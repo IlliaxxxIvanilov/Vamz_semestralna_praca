@@ -1,3 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">semestralka</string>
+    <string name="app_name">Žilina Guide</string>
+
+    <string name="nav_map">Mapa</string>
+    <string name="nav_list">Zoznam</string>
+    <string name="nav_favorites">Obľúbené</string>
+
+    <string name="screen_list_title">Miesta v Žiline</string>
+    <string name="screen_favorites_title">Obľúbené miesta</string>
+
+    <string name="action_my_location">Moja poloha</string>
+    <string name="action_sort_distance">Zoradiť podľa vzdialenosti</string>
+    <string name="action_navigate">Navigovať</string>
+    <string name="action_add_favorite">Pridať do obľúbených</string>
+    <string name="action_remove_favorite">Odstrániť z obľúbených</string>
+    <string name="action_back">Späť</string>
+
+    <string name="filter_all">Všetko</string>
+
+    <string name="search_placeholder">Hľadať miesto…</string>
+
+    <string name="list_empty">Žiadne miesta neboli nájdené.</string>
+    <string name="favorites_empty">Zatiaľ nemáte žiadne obľúbené miesta.\nKlepnite na srdiečko v detaile miesta.</string>
+    <string name="detail_not_found">Miesto sa nenašlo.</string>
+
+    <string name="notification_channel_name">Aktualizácie miest</string>
+    <string name="notification_channel_description">Upozornenia pri aktualizácii zoznamu miest</string>
+    <string name="notification_refresh_title">Žilina Guide</string>
+    <string name="notification_refresh_text">Zoznam miest bol aktualizovaný.</string>
 </resources>

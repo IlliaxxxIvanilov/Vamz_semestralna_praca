@@ -1,0 +1,82 @@
+[
+  {
+    "id": "fallback_1",
+    "name": "Budatínsky hrad",
+    "latitude": 49.2103,
+    "longitude": 18.7251,
+    "category": "ATTRACTION",
+    "description": "Renesančný hrad z 13. storočia pri sútoku Váhu a Kysuce.",
+    "imageUrl": null,
+    "openingHours": "Ut-Ne: 09:00-17:00"
+  },
+  {
+    "id": "fallback_2",
+    "name": "Mestský park",
+    "latitude": 49.2231,
+    "longitude": 18.7394,
+    "category": "PARK",
+    "description": "Rozľahlý park v centre mesta vhodný na prechádzky.",
+    "imageUrl": null,
+    "openingHours": null
+  },
+  {
+    "id": "fallback_3",
+    "name": "Caffé Mia",
+    "latitude": 49.2218,
+    "longitude": 18.7412,
+    "category": "CAFE",
+    "description": "Útulná kaviarňa na Mariánskom námestí.",
+    "imageUrl": null,
+    "openingHours": "Po-Pi: 08:00-20:00, So-Ne: 09:00-21:00"
+  },
+  {
+    "id": "fallback_4",
+    "name": "Reštaurácia Koliba",
+    "latitude": 49.2189,
+    "longitude": 18.7523,
+    "category": "RESTAURANT",
+    "description": "Tradičná slovenská kuchyňa vo Vlčinciach.",
+    "imageUrl": null,
+    "openingHours": "Po-Ne: 11:00-22:00"
+  },
+  {
+    "id": "fallback_5",
+    "name": "Obchodné centrum Dubeň",
+    "latitude": 49.2334,
+    "longitude": 18.7289,
+    "category": "SHOP",
+    "description": "Nákupné centrum s wide výberom obchodov a reštaurácií.",
+    "imageUrl": null,
+    "openingHours": "Po-Ne: 09:00-21:00"
+  },
+  {
+    "id": "fallback_6",
+    "name": "Farský kostol",
+    "latitude": 49.2225,
+    "longitude": 18.7401,
+    "category": "ATTRACTION",
+    "description": "Gotický kostol zo 14. storočia v centre Žiliny.",
+    "imageUrl": null,
+    "openingHours": null
+  },
+  {
+    "id": "fallback_7",
+    "name": "Kaviarňa Pekáreň",
+    "latitude": 49.2241,
+    "longitude": 18.7378,
+    "category": "CAFE",
+    "description": "Moderná kaviarňa s domácim pečivom a výberovými kávami.",
+    "imageUrl": null,
+    "openingHours": "Po-Pi: 07:00-19:00, So: 08:00-18:00"
+  },
+  {
+    "id": "fallback_8",
+    "name": "Park Chrasť",
+    "latitude": 49.2156,
+    "longitude": 18.7467,
+    "category": "PARK",
+    "description": "Lesopark na okraji mesta ideálny na jogging a cyklistiku.",
+    "imageUrl": null,
+    "openingHours": null
+  }
+]
