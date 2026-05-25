@@ -1,14 +1,17 @@
 package com.example.semestralka.di
 
+import android.content.Context
 import com.example.semestralka.data.remote.OverpassApiService
 import com.example.semestralka.data.repository.PlacesRepositoryImpl
 import com.example.semestralka.repository.PlacesRepository
+import com.example.semestralka.worker.RefreshNotificationHelper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -37,6 +40,12 @@ object NetworkModule {
     @Singleton
     fun provideOverpassApiService(retrofit: Retrofit): OverpassApiService =
         retrofit.create(OverpassApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRefreshNotificationHelper(
+        @ApplicationContext context: Context
+    ): RefreshNotificationHelper = RefreshNotificationHelper(context)
 }
 
 @Module
